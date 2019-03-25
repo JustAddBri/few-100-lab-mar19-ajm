@@ -19,11 +19,17 @@ let billAmount: number;
 let tipAmount: number;
 let total: number;
 
-let previousTipId = sessionStorage.getItem('tipBtnId');
+// sessionStorage only lasts as long as the browser window is open. If you use localStorage, it saves it.
+let previousTipId = localStorage.getItem('tipBtnId');
 if (previousTipId != null) {
+    // if you used getElementById you can get to this more efficiently.
     const btn = document.querySelector(`#${previousTipId}`) as HTMLButtonElement;
     btn.click();
     billInput.classList.remove('bad-input');
+} else {
+    // what should we do if it is null? In other words, it isn't saved?
+    // I'm going to default it to 20%. Because I am generous like that.
+    document.getElementById('twenty').click();
 }
 
 
@@ -68,7 +74,7 @@ function customButtonClick() {
         btn.disabled = false;
     });
     this.disabled = true;
-    sessionStorage.setItem('tipBtnId', this.id);
+    localStorage.setItem('tipBtnId', this.id);
 }
 
 function tipButtonClick() {
@@ -85,7 +91,7 @@ function tipButtonClick() {
         }
     });
 
-    sessionStorage.setItem('tipBtnId', clickedBtn.id);
+    localStorage.setItem('tipBtnId', clickedBtn.id);
 
     percentageTip = parseFloat(clickedBtn.value);
     let tipPercentDisplay = document.querySelectorAll('.tipPercent');
