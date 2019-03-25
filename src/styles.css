@@ -9,3 +9,8 @@ h1 {
 .top-buffer{
     margin-top: 1%
 }
+
+.invisible {
+    visibility: hidden;
+  }
+  

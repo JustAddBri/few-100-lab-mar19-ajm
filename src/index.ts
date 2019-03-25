@@ -1,19 +1,46 @@
 import './styles.css';
-
 const buttons = document.querySelectorAll(".tipBtn");
 buttons.forEach(element => {
-    element.addEventListener('click', tipButtonClick);
+    if (element.id === "custom") {
+        element.addEventListener('click', customButtonClick);
+    } else {
+        element.addEventListener('click', tipButtonClick)
+    };
 });
 
 const billInput = document.querySelector('#baseAmount') as HTMLInputElement;
 billInput.addEventListener('keyup', baseAmountChanged);
+
+const customTipInput = document.querySelector('#customEntry') as HTMLInputElement;
+customTipInput.addEventListener('keyup', customTipAmountChanged);
 
 let percentageTip: number;
 let billAmount: number;
 let tipAmount: number;
 let total: number;
 
+let previousTipId = sessionStorage.getItem('tipBtnId');
+if (previousTipId != null) {
+    const btn = document.querySelector(`#${previousTipId}`) as HTMLButtonElement;
+    btn.click();
+    billInput.classList.remove('bad-input');
+}
 
+
+function customTipAmountChanged() {
+    if (validateInput(this)) {
+        percentageTip = this.valueAsNumber;
+        let tipPercentDisplay = document.querySelectorAll('.tipPercent');
+        tipPercentDisplay.forEach(element => {
+            const display = element as HTMLSpanElement;
+            display.innerText = `${percentageTip}%`;
+        });
+
+        if (validateInput(billInput)) {
+            updateTotals(false);
+        }
+    }
+}
 
 function baseAmountChanged() {
     const input = this as HTMLInputElement;
@@ -23,7 +50,6 @@ function baseAmountChanged() {
         updateTotals(true);
     }
 }
-
 
 function validateInput(input: HTMLInputElement): boolean {
     if (input.valueAsNumber > 0) {
@@ -35,17 +61,31 @@ function validateInput(input: HTMLInputElement): boolean {
     }
 }
 
+function customButtonClick() {
+    customTipInput.classList.remove('invisible');
+    buttons.forEach(element => {
+        const btn = element as HTMLButtonElement;
+        btn.disabled = false;
+    });
+    this.disabled = true;
+    sessionStorage.setItem('tipBtnId', this.id);
+}
+
 function tipButtonClick() {
     const clickedBtn = this as HTMLButtonElement;
+    customTipInput.classList.add('invisible');
 
     buttons.forEach(element => {
         const btn = element as HTMLButtonElement;
         if (clickedBtn.id === btn.id) {
             btn.disabled = true;
+
         } else {
             btn.disabled = false;
         }
     });
+
+    sessionStorage.setItem('tipBtnId', clickedBtn.id);
 
     percentageTip = parseFloat(clickedBtn.value);
     let tipPercentDisplay = document.querySelectorAll('.tipPercent');
