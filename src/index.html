@@ -23,11 +23,13 @@
                     <span class="input-group-text">$</span>
                 </div>
                 <input type="number"
+                       min="0"
+                       step="0.01"
                        id="baseAmount">
             </div>
 
 
-            <div class="btn-group">
+            <div class="btn-group top-buffer">
                 <button class="btn btn-secondary tipBtn"
                         id="ten"
                         value="10">10%</button>
@@ -44,13 +46,15 @@
 
             <div>
                 <ul class="
-                          list-group">
+                          list-group
+                          top-buffer">
                         <li class="list-group-item">Bill Amount: <span id="billAmount"></span></li>
                         <li class="list-group-item">Tip Percentage: <span class="tipPercent"></span></li>
                         <li class="list-group-item">Amount of tip: <span id="currentTipAmount"></span></li>
                         <li class="list-group-item">Total to be Paid: <span id="total"></span></li>
                         </ul>
             </div>
+
         </section>
     </div>
 </body>

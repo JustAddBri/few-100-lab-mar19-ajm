@@ -3,5 +3,9 @@ h1 {
 }
 
 .bad-input {
-    outline-color: red;
+    border-color: red;
+}
+
+.top-buffer{
+    margin-top: 1%
 }
